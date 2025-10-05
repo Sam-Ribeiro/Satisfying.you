@@ -1,7 +1,7 @@
 import { StyleSheet } from 'react-native'
 import { red } from 'react-native-reanimated/lib/typescript/Colors'
 
-export const coletaSyles = StyleSheet.create({
+export const coletaStyles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: '#372775',

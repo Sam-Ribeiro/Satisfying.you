@@ -1,5 +1,5 @@
 import { View, Text, TouchableOpacity } from "react-native";
-import { coletaSyles } from "../styles/coletaStyles";
+import { coletaStyles } from "../styles/coletaStyles";
 import RatingButton from "../components/ratingButton";
 
 const Coleta = (props) =>{
@@ -10,9 +10,9 @@ const Coleta = (props) =>{
     }
     
     return(
-        <View style={coletaSyles.coleta}>
-            <Text style={coletaSyles.text}>Oque você achou do carnaval 2025?</Text>
-            <View style={coletaSyles.feedback}>
+        <View style={coletaStyles.coleta}>
+            <Text style={coletaStyles.text}>O que você achou do carnaval 2025?</Text>
+            <View style={coletaStyles.feedback}>
                 <RatingButton text="Péssimo" color="red" icon="sentiment-very-dissatisfied" onPress={GiveFeedback} />
                 <RatingButton text="Ruim" color="orange" icon="sentiment-dissatisfied" onPress={GiveFeedback}/>
                 <RatingButton text="Neutro" color="yellow" icon="sentiment-neutral" onPress={GiveFeedback}/>

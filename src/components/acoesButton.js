@@ -1,16 +1,15 @@
 import {TouchableOpacity, Text, StyleSheet} from "react-native"
 import Icon from 'react-native-vector-icons/MaterialIcons'
 
-const RatingButton = (props) =>{
+const AcoesButton = (props) =>{
 
     const text = props.text
     const icon = props.icon
-    const color = props.color
     const onPress = props.onPress
     
     return(
         <TouchableOpacity style={style.button} onPress={onPress}>
-            <Icon name={icon} size={65} color={color} />
+            <Icon name={icon} size={65} color={style.icon.color} />
             <Text style={style.text}>{text}</Text>
         </TouchableOpacity>
     )
@@ -18,14 +17,20 @@ const RatingButton = (props) =>{
 
 const style = StyleSheet.create({
     button:{
+        backgroundColor:'#2B1D62',
         display: 'flex',
         alignItems: 'center',
-        padding: 15
+        justifyContent: 'center',
+        width: 150,
+        height: 140,
     },
     text:{
         color: "#ffffffff",
         fontSize: 16
+    },
+    icon:{
+        color: "#ffffffff",
     }
 })
 
-export default RatingButton
+export default AcoesButton
