@@ -1,7 +1,4 @@
 import { StyleSheet } from 'react-native'
-import Relatorio from '../screens/Relatorio'
-import { Image } from 'react-native-reanimated/lib/typescript/Animated'
-
 export const globalStyles = StyleSheet.create({
   container: {
     flex: 1,
@@ -40,5 +37,32 @@ export const globalStyles = StyleSheet.create({
     display: 'flex',
     flexDirection: 'column',
     alignItems: 'flex-start'
+  },
+  formulario:{
+    backgroundColor: '#372775',
+    flex: 1,
+    display: 'flex',
+    flexDirection: 'column',
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+
+  button:{
+    height: 30,
+    width: '60%',
+    backgroundColor: '#37BD6D',
+    borderRadius: 0,
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center'
+  },
+  buttonText:{
+    fontSize: 18,
+    color: 'white',
+  },
+  deleteButton:{
+    position: 'absolute',
+    bottom: '5%',
+    right: '5%'
   }
 })

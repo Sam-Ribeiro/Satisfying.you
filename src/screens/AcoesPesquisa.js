@@ -13,7 +13,7 @@ const AcoesPesquisa = (props) =>{
         props.navigation.navigate('Relatorio')
     }
     const GoToModify= () =>{
-        props.navigation.navigate('Relatorio')
+        props.navigation.navigate('Editar Pesquisa')
     }
 
 
