@@ -1,20 +1,39 @@
 import { View, TouchableOpacity, Text, Alert} from "react-native";
 import { globalStyles } from "../styles/globalStyles";
 import { useState } from "react";
+import { doc, updateDoc, initializeFirestore, deleteDoc } from "firebase/firestore";
+import { app } from "../firebase/config";
+
 import InputField from "../components/inputField";
 import InputImage from "../components/inputImage";
 import Icon from 'react-native-vector-icons/MaterialIcons'
 
 const ModificarPesquisa = (props) =>{
 
-    const [nome, SetNome] = useState('')
-    const [data, SetData] = useState('')
+    const [pesquisa, SetPesquisa] = useState(props.route.params)
+    const [nome, SetNome] = useState(pesquisa.nome)
+    const [data, SetData] = useState(pesquisa.dataPesquisa)
+    const db = initializeFirestore(app, {experimentalForceLongPolling: true})
 
     const Editar = () =>{
-        props.navigation.navigate('Editar Pesquisa')
+        const pesquisaRef = doc(db, "pesquisas", pesquisa.id )
+
+        updateDoc(pesquisaRef, {
+            nome: nome,
+            dataPesquisa: data,
+            //imagem: imagem
+        })
+            .then(() => {
+                // atualizou  colocar pesquisa atualizada com sucesso
+            })
+            .catch((error) =>{
+                console.log("Erro: " + error)
+            })
+
     }
 
     const apagarPesquisa = () =>{
+        deleteDoc(doc(db, "pesquisas", pesquisa.id))
         props.navigation.navigate('Pesquisa')
     }
 
@@ -24,7 +43,7 @@ const ModificarPesquisa = (props) =>{
             'Tem certeza que quer apagar a pesquisa?',
             [
                 { text: 'Não', style: 'cancel' },
-                { text: 'Sim', onPress: apagarPesquisa },
+                { text: 'Sim', onPress: apagarPesquisa() },
             ]
         )
     }

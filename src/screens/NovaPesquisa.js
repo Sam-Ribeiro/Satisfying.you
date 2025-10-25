@@ -3,14 +3,32 @@ import { globalStyles } from "../styles/globalStyles";
 import { useState } from "react";
 import InputField from "../components/inputField";
 import InputImage from "../components/inputImage";
+import { collection, initializeFirestore, addDoc } from "firebase/firestore";
+import { app } from "../firebase/config";
 
 const NovaPesquisa = (props) =>{
 
     const [nome, SetNome] = useState('')
     const [data, SetData] = useState('')
 
+    const db = initializeFirestore(app, {experimentalForceLongPolling: true})
+    const pesquisaCollection = collection(db, "pesquisas")
+
     const Cadastrar = () =>{
-        props.navigation.navigate('AcoesPesquisa')
+        const pesquisa = {
+            nome: nome,
+            dataPesquisa: data,
+            // imagem: imagem
+        }
+
+        addDoc(pesquisaCollection, pesquisa)
+            .then((result)=> {
+                console.log("Dados inseriros com sucesso: " + JSON.stringify(result))
+                props.navigation.navigate('AcoesPesquisa')
+            })
+            .catch((error)=>{
+                console.log("Erro ao inserir dados: " + JSON.stringify(error))
+            })
     }
 
     return(

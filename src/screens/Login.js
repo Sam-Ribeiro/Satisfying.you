@@ -1,35 +1,23 @@
 import React, {useState} from 'react';
-import {
-  View,
-  Text,
-  TextInput,
-  TouchableOpacity,
-  KeyboardAvoidingView,
-  Platform,
-  Alert,
-  ScrollView,
-  Dimensions,
-} from 'react-native';
+import { View, Text,TextInput, TouchableOpacity, KeyboardAvoidingView, Platform, Alert, ScrollView, Dimensions,} from 'react-native';
 
 import {authStyles} from '../styles/authStyles';
+import { signInWithEmailAndPassword } from 'firebase/auth';
+import { auth_mod } from '../firebase/config';
 
 export default function Login({navigation}) {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
 
   const validateAndLogin = () => {
-    if (!email.trim() || !password.trim()) {
-      Alert.alert('Erro', 'Por favor preencha Email e Senha.');
-      return;
-    }
-
-    const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.com$/;
-    if (!emailRegex.test(email)) {
-      Alert.alert('Erro', 'Por favor insira um email válido.');
-      return;
-    }
-
-    navigation.replace('Home');
+    signInWithEmailAndPassword(auth_mod,email,password)
+      .then((userCredential)=>{
+        console.log("usuario logado com sucesso: "+ JSON.stringify(userCredential))
+        navigation.replace('Home');
+      })
+      .catch((erro) =>{
+        console.log("erro ao autenticar usuario: "+ JSON.stringify(erro))
+      })
   };
 
   const {width, height} = Dimensions.get('window');

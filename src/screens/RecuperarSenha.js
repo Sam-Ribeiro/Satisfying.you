@@ -10,6 +10,8 @@ import {
 } from 'react-native';
 
 import {authStyles} from '../styles/authStyles';
+import { sendPasswordResetEmail } from 'firebase/auth';
+import { auth_mod } from '../firebase/config';
 
 export default function RecuperarSenha({navigation}) {
   const [email, setEmail] = useState('');
@@ -19,13 +21,13 @@ export default function RecuperarSenha({navigation}) {
       Alert.alert('Erro', 'Por favor insira o Email.');
       return;
     }
-
-    Alert.alert(
-      'Solicitação enviada',
-      'Se o email existir no sistema você receberá instruções para recuperar a senha.',
-    );
-
-    navigation.replace('Login');
+    sendPasswordResetEmail(auth_mod,email)
+      .then(()=> {
+        console.log("Email de redefinição de senha enviado com sucesso, verifique sua caixa de entrada")
+      })
+      .catch((erro)=>{
+        console.log("erro ao enviar Email de redefinição de senha: "+ JSON.stringify(erro))
+      }) 
   };
 
   return (

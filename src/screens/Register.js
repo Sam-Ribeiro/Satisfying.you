@@ -1,14 +1,7 @@
 import React, {useState} from 'react';
-import {
-  View,
-  Text,
-  TextInput,
-  TouchableOpacity,
-  KeyboardAvoidingView,
-  Platform,
-  Alert,
-} from 'react-native';
-
+import { View, Text, TextInput, TouchableOpacity, KeyboardAvoidingView,Platform, Alert,} from 'react-native';
+import { createUserWithEmailAndPassword } from 'firebase/auth';
+import { auth_mod } from '../firebase/config';
 import {authStyles} from '../styles/authStyles';
 
 export default function Register({navigation}) {
@@ -20,8 +13,14 @@ export default function Register({navigation}) {
       Alert.alert('Erro', 'Por favor preencha Email e Senha.');
       return;
     }
-
-    navigation.replace('Home');
+      createUserWithEmailAndPassword(auth_mod, email, password)
+        .then((userCredential)=>{
+          console.log("usuario criado com sucesso: "+ JSON.stringify(userCredential))
+          navigation.replace('Login');
+        })
+        .catch((erro) =>{
+          console.log("erro ao criar usuario: "+ JSON.stringify(erro))
+        })
   };
 
   return (

@@ -1,13 +1,8 @@
-import React, {useRef, useState} from 'react';
-import {
-  View,
-  Text,
-  TouchableOpacity,
-  Animated,
-  Dimensions,
-  TouchableWithoutFeedback,
-} from 'react-native';
+import React, {useRef, useState, useEffect} from 'react';
+import { View, Text, TouchableOpacity, Animated, Dimensions, TouchableWithoutFeedback, FlatList } from 'react-native';
 import {sideMenuStyles} from '../styles/sideMenu';
+import { query, collection, initializeFirestore, onSnapshot } from "firebase/firestore";
+import { app } from "../firebase/config";
 
 export default function SideMenu({navigation, children}) {
   const [open, setOpen] = useState(false);
@@ -43,9 +38,37 @@ export default function SideMenu({navigation, children}) {
     toggleMenu();
   };
 
+  //firebase muda dps isso é so pra carregar 
+
+  const db = initializeFirestore(app, {experimentalForceLongPolling: true})
+  const pesquisaCollection = collection(db, "pesquisas")
+  const [ListaPesquisas, setListaPesquisas] = useState()
+  useEffect ( () => {
+    const q = query(pesquisaCollection)
+
+    const unsubscribe = onSnapshot(q, (snapshot)=>{
+      const pesquisas = []
+      snapshot.forEach( (doc) => {
+        pesquisas.push({
+          id: doc.id,
+          ...doc.data()
+        })
+      })
+      
+      setListaPesquisas(pesquisas)
+    })
+  }, [])
+
+  const itemPesquisa = ({item}) =>{
+    return(
+      <TouchableOpacity style={{backgroundColor:"#fff"}} onPress={() => navigation.navigate('Editar Pesquisa',item)}>
+        <Text>Id: {item.id} Nome: {item.nome} Data: {item.dataPesquisa}</Text>
+      </TouchableOpacity>
+    )
+  }
+
   return (
     <View style={{flex: 1}}>
-      {/* */}
       <View style={sideMenuStyles.header}>
         <TouchableOpacity
           onPress={toggleMenu}
@@ -54,10 +77,8 @@ export default function SideMenu({navigation, children}) {
         </TouchableOpacity>
       </View>
 
-      {/* */}
       <View style={{flex: 1}}>{children}</View>
 
-      {/* */}
       {open && (
         <TouchableWithoutFeedback onPress={toggleMenu}>
           <View
@@ -74,7 +95,6 @@ export default function SideMenu({navigation, children}) {
         </TouchableWithoutFeedback>
       )}
 
-      {/* */}
       {visible && (
         <Animated.View
           style={[
@@ -93,11 +113,18 @@ export default function SideMenu({navigation, children}) {
             style={sideMenuStyles.menuItem}>
             <Text style={sideMenuStyles.menuText}>Pesquisas</Text>
           </TouchableOpacity>
+          {/*  Exibindo os itens do db EXEMPLO!!!!!*/}
+          <View>
+            <FlatList data={ListaPesquisas} renderItem={itemPesquisa} keyExtractor={pesquisa => pesquisa.id}></FlatList>
+          </View>
+          {/*  Exibindo os itens do db EXEMPLO!!!!!*/}
+          
           <TouchableOpacity onPress={logout} style={sideMenuStyles.menuItem}>
             <Text style={sideMenuStyles.menuText}>Sair</Text>
           </TouchableOpacity>
         </Animated.View>
       )}
+      
     </View>
   );
 }
