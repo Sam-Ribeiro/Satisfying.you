@@ -49,7 +49,7 @@ export const globalStyles = StyleSheet.create({
 
   button:{
     height: 30,
-    width: '60%',
+    width: 400,
     backgroundColor: '#37BD6D',
     borderRadius: 0,
     display: 'flex',

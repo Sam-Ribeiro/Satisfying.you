@@ -19,7 +19,7 @@ export default function App() {
   return (
     <NavigationContainer>
       <Stack.Navigator
-        initialRouteName="Login"
+        initialRouteName="Relatorio"
         screenOptions={{
           headerStyle: {backgroundColor: '#2B1D62'},
           headerTintColor: '#fff',
