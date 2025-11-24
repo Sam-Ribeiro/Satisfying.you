@@ -3,12 +3,17 @@ import { View, Text, TouchableOpacity, Animated, Dimensions, TouchableWithoutFee
 import {sideMenuStyles} from '../styles/sideMenu';
 import { query, collection, initializeFirestore, onSnapshot } from "firebase/firestore";
 import { app } from "../firebase/config";
+import { useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
+import { reducerSetPesquisa } from '../redux/pesquisaSlice';
 
 export default function SideMenu({navigation, children}) {
   const [open, setOpen] = useState(false);
   const [visible, setVisible] = useState(false);
   const widthAnim = useRef(new Animated.Value(0)).current;
   const screenWidth = Dimensions.get('window').width;
+
+  const email = useSelector((state) => state.login.email) 
 
   const toggleMenu = () => {
     if (!open) {
@@ -38,7 +43,7 @@ export default function SideMenu({navigation, children}) {
     toggleMenu();
   };
 
-  //firebase muda dps isso é so pra carregar 
+  //firebase muda dps, isso é so pra carregar VVVVV
 
   const db = initializeFirestore(app, {experimentalForceLongPolling: true})
   const pesquisaCollection = collection(db, "pesquisas")
@@ -58,10 +63,15 @@ export default function SideMenu({navigation, children}) {
       setListaPesquisas(pesquisas)
     })
   }, [])
+  const dispatch = useDispatch()
+  const abrirPesquisa = (item) =>{
+    dispatch(reducerSetPesquisa({id: item.id, nome: item.nome, data: item.dataPesquisa, imagem: item.imagem}))
+    navigation.navigate('Editar Pesquisa')
+  }
 
   const itemPesquisa = ({item}) =>{
     return(
-      <TouchableOpacity style={{backgroundColor:"#fff"}} onPress={() => navigation.navigate('Editar Pesquisa',item)}>
+      <TouchableOpacity style={{backgroundColor:"#fff"}} onPress={() => abrirPesquisa(item)}>
         <Text>Id: {item.id} Nome: {item.nome} Data: {item.dataPesquisa}</Text>
       </TouchableOpacity>
     )
@@ -117,8 +127,8 @@ export default function SideMenu({navigation, children}) {
           <View>
             <FlatList data={ListaPesquisas} renderItem={itemPesquisa} keyExtractor={pesquisa => pesquisa.id}></FlatList>
           </View>
-          {/*  Exibindo os itens do db EXEMPLO!!!!!*/}
-          
+          {/*  Exibindo os itens do db EXEMPLO!!!!! e abaixo o email do usuario logado*/}
+          <Text style={sideMenuStyles.menuText}>{email}</Text>
           <TouchableOpacity onPress={logout} style={sideMenuStyles.menuItem}>
             <Text style={sideMenuStyles.menuText}>Sair</Text>
           </TouchableOpacity>

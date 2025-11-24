@@ -1,18 +1,23 @@
 import React, {useState} from 'react';
 import { View, Text,TextInput, TouchableOpacity, KeyboardAvoidingView, Platform, Alert, ScrollView, Dimensions,} from 'react-native';
-
 import {authStyles} from '../styles/authStyles';
 import { signInWithEmailAndPassword } from 'firebase/auth';
 import { auth_mod } from '../firebase/config';
+import { useDispatch } from 'react-redux';
+import { reducerSetLogin } from '../redux/loginSlice';
 
 export default function Login({navigation}) {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const dispatch = useDispatch()
 
   const validateAndLogin = () => {
     signInWithEmailAndPassword(auth_mod,email,password)
       .then((userCredential)=>{
         console.log("usuario logado com sucesso: "+ JSON.stringify(userCredential))
+
+        dispatch(reducerSetLogin({email: email, password: password}))
+
         navigation.replace('Home');
       })
       .catch((erro) =>{

@@ -33,12 +33,14 @@ export default function Home({navigation}) {
           showsHorizontalScrollIndicator={false}
           contentContainerStyle={homeStyles.cardsList}
         />
-
+        
         <TouchableOpacity
           style={homeStyles.newButton}
           onPress={() => navigation.navigate('Pesquisa')}>
           <Text style={homeStyles.newButtonText}>NOVA PESQUISA</Text>
         </TouchableOpacity>
+
+        
       </SafeAreaView>
     </SideMenu>
   );

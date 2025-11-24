@@ -12,75 +12,70 @@ import Register from './src/screens/Register';
 import NovaPesquisa from './src/screens/NovaPesquisa';
 import ModificarPesquisa from './src/screens/ModificarPesquisa';
 import AgradecimentoParticipacao from './src/screens/AgradecimentoParticipacao';
+import { Provider } from 'react-redux';
+import { store } from './src/redux/store';
 
 const Stack = createStackNavigator();
 
 export default function App() {
-  return (
-    <NavigationContainer>
-      <Stack.Navigator
-        initialRouteName="Relatorio"
-        screenOptions={{
-          headerStyle: {backgroundColor: '#2B1D62'},
-          headerTintColor: '#fff',
-        }}>
-        {/* */}
-        <Stack.Screen
-          name="Login"
-          component={Login}
-          options={{headerShown: false}}
-        />
-
-        {/* */}
-        <Stack.Screen
-          name="Home"
-          component={Home}
-          options={{headerShown: false}}
-        />
-
-        {/*  */}
-        
-        <Stack.Screen name="Relatorio" component={Relatorio} />
-
-        {/*  */}
-        <Stack.Screen
-          name="RecuperarSenha"
-          component={RecuperarSenha}
-          options={{title: 'Recuperar Senha'}}
-        />
-        <Stack.Screen
-          name="Register"
-          component={Register}
-          options={{title: 'Cadastrar'}}
-        />
-
-        <Stack.Screen
-          name="Pesquisa"
-          component={NovaPesquisa}
-          options={{title: 'Nova Pesquisa'}}
-        />
-
-        <Stack.Screen
-          name="AcoesPesquisa"
-          component={AcoesPesquisa}
-          options={{title: 'Ações de Pesquisa'}}
-        />
-        <Stack.Screen
-          name="Coleta"
-          component={Coleta}
-          options={{headerShown: false}}
-        />
-        <Stack.Screen
-          name="Editar Pesquisa"
-          component={ModificarPesquisa}
-          options={{title: 'Modificar Pesquisa'}}
-        />
-        <Stack.Screen
-          name="AgradecimentoParticipacao"
-          component={AgradecimentoParticipacao}
-          options={{headerShown: false}}
-        />
-      </Stack.Navigator>
-    </NavigationContainer>
-  );
+    return (
+        <Provider store={store}>
+            <NavigationContainer>
+                <Stack.Navigator
+                initialRouteName="Login"
+                screenOptions={{ headerStyle: {backgroundColor: '#2B1D62'}, headerTintColor: '#fff',}}
+                >
+                    <Stack.Screen
+                    name="Login"
+                    component={Login}
+                    options={{headerShown: false}}
+                    />
+                    <Stack.Screen
+                    name="Home"
+                    component={Home}
+                    options={{headerShown: false}}
+                    />
+                    <Stack.Screen 
+                    name="Relatorio" 
+                    component={Relatorio} 
+                    />
+                    <Stack.Screen
+                    name="RecuperarSenha"
+                    component={RecuperarSenha}
+                    options={{title: 'Recuperar Senha'}}
+                    />
+                    <Stack.Screen
+                    name="Register"
+                    component={Register}
+                    options={{title: 'Cadastrar'}}
+                    />
+                    <Stack.Screen
+                    name="Pesquisa"
+                    component={NovaPesquisa}
+                    options={{title: 'Nova Pesquisa'}}
+                    />
+                    <Stack.Screen
+                    name="AcoesPesquisa"
+                    component={AcoesPesquisa}
+                    options={{title: 'Ações de Pesquisa'}}
+                    />
+                    <Stack.Screen
+                    name="Coleta"
+                    component={Coleta}
+                    options={{headerShown: false}}
+                    />
+                    <Stack.Screen
+                    name="Editar Pesquisa"
+                    component={ModificarPesquisa}
+                    options={{title: 'Modificar Pesquisa'}}
+                    />
+                    <Stack.Screen
+                    name="AgradecimentoParticipacao"
+                    component={AgradecimentoParticipacao}
+                    options={{headerShown: false}}
+                    />
+                </Stack.Navigator>
+            </NavigationContainer>
+        </Provider>
+    );
 }
