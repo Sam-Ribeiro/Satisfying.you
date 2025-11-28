@@ -1,20 +1,25 @@
 import React from 'react';
-import {View, Text, TouchableOpacity, StyleSheet} from 'react-native';
-import Icon from 'react-native-vector-icons/MaterialIcons';
+import { View, Text, TouchableOpacity, StyleSheet, Image } from 'react-native';
 
-export default function CardItem({title, subtitle, iconName, onPress}) {
+export default function CardItem({ title, date, image, onPress }) {
   return (
     <TouchableOpacity
       style={styles.card}
-      activeOpacity={0.8}
+      activeOpacity={0.9}
       onPress={onPress}
-      accessibilityRole="button"
-      accessibilityLabel={title}>
-      {iconName ? (
-        <Icon name={iconName} size={36} color="#2B1D62" style={styles.icon} />
-      ) : null}
+    >
+      {}
+      {image ? (
+        <Image source={image} style={styles.image} resizeMode="cover" />
+      ) : (
+        <View style={styles.imagePlaceholder} />
+      )}
+
+      {}
       <Text style={styles.title}>{title}</Text>
-      {subtitle ? <Text style={styles.subtitle}>{subtitle}</Text> : null}
+
+      {}
+      {date && <Text style={styles.date}>{date}</Text>}
     </TouchableOpacity>
   );
 }
@@ -22,25 +27,36 @@ export default function CardItem({title, subtitle, iconName, onPress}) {
 const styles = StyleSheet.create({
   card: {
     width: 150,
-    height: 140,
     backgroundColor: '#fff',
     borderRadius: 12,
-    padding: 12,
-    justifyContent: 'center',
+    padding: 2,
+    marginHorizontal: 6,
     alignItems: 'center',
     elevation: 3,
-    shadowColor: '#000',
-    shadowOpacity: 0.08,
-    shadowOffset: {width: 0, height: 2},
-    shadowRadius: 6,
-    margin: 10,
   },
-  icon: {marginBottom: 8},
+  image: {
+    width: 140,
+    height: 90,
+    borderRadius: 8,
+    marginBottom: 10,
+  },
+  imagePlaceholder: {
+    width: 140,
+    height: 90,
+    borderRadius: 8,
+    backgroundColor: '#E5E7EB',
+    marginBottom: 10,
+  },
   title: {
     fontSize: 16,
-    color: '#111827',
     fontWeight: '700',
+    color: '#111827',
     textAlign: 'center',
   },
-  subtitle: {fontSize: 12, color: '#6B7280', marginTop: 6, textAlign: 'center'},
+  date: {
+    marginTop: 6,
+    fontSize: 12,
+    color: '#6B7280',
+    textAlign: 'center',
+  },
 });

@@ -6,6 +6,7 @@ import {
   TouchableOpacity,
   SafeAreaView,
   TextInput,
+  ScrollView,
 } from 'react-native';
 import SideMenu from '../components/SideMenu';
 import CardItem from '../components/CardItem';
@@ -15,20 +16,23 @@ export default function Home({ navigation }) {
   const [searchTerm, setSearchTerm] = useState('');
 
   const cardsData = [
-    { id: '1', title: 'SECOMP' },
-    { id: '2', title: 'UBUNTU' },
-    { id: '3', title: 'MENINAS CPU' },
+    { id: '1', title: 'SECOMP', date: '10/11/2025', image: require('../assets/images/card1.png') },
   ];
 
   const renderCard = ({ item }) => (
-    <CardItem title={item.title} style={homeStyles.cardFlutuante} />
+    <CardItem
+      title={item.title}
+      date={item.date}
+      image={item.image}
+      onPress={() => navigation.navigate('Pesquisa', { id: item.id })}
+    />
   );
 
   return (
     <SideMenu navigation={navigation}>
       <SafeAreaView style={homeStyles.safe}>
-        <View style={{ padding: 16, flex: 1 }}>
-          {}
+        <View style={{ flex: 1, padding: 16 }}>
+
           <TextInput
             style={homeStyles.searchBar}
             placeholder="Insira o termo de busca..."
@@ -37,21 +41,25 @@ export default function Home({ navigation }) {
             onChangeText={setSearchTerm}
           />
 
-          <FlatList
-            data={cardsData}
-            keyExtractor={(item) => item.id}
-            renderItem={renderCard}
-            horizontal
-            showsHorizontalScrollIndicator={false}
-            contentContainerStyle={{ gap: 12, paddingVertical: 8 }}
-          />
+          <ScrollView showsVerticalScrollIndicator={false}>
+            <FlatList
+              data={cardsData}
+              keyExtractor={(item) => item.id}
+              renderItem={renderCard}
+              horizontal
+              showsHorizontalScrollIndicator={false}
+              contentContainerStyle={{ paddingVertical: 8, gap: 12 }}
+            />
 
-          <TouchableOpacity
-            style={homeStyles.newButton}
-            onPress={() => navigation.navigate('Pesquisa')}
-          >
-            <Text style={homeStyles.newButtonText}>NOVA PESQUISA</Text>
-          </TouchableOpacity>
+            <TouchableOpacity
+              style={homeStyles.newButton}
+              onPress={() => navigation.navigate('Pesquisa')}
+            >
+              <Text style={homeStyles.newButtonText}>NOVA PESQUISA</Text>
+            </TouchableOpacity>
+
+          </ScrollView>
+
         </View>
       </SafeAreaView>
     </SideMenu>
