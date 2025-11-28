@@ -1,36 +1,15 @@
-import {StyleSheet} from 'react-native';
+import { StyleSheet } from 'react-native';
 
 export const homeStyles = StyleSheet.create({
   safe: {
     flex: 1,
     backgroundColor: '#372775',
   },
-  header: {
-    flexDirection: 'row',
-    justifyContent: 'flex-start',
-    backgroundColor: '#1A1460',
-    paddingVertical: 16,
-    paddingHorizontal: 16,
-  },
-  headerButton: {
-    paddingVertical: 6,
-    paddingHorizontal: 12,
-    backgroundColor: '#372775',
-    borderRadius: 8,
-  },
-  headerButtonText: {
+  sectionTitle: {
     color: '#fff',
-    fontWeight: '600',
-  },
-  main: {
-    flex: 1,
-    paddingHorizontal: 16,
-    marginTop: 20,
-  },
-  cardsList: {
-    flexDirection: 'row',
-    gap: 12,
-    marginBottom: 24,
+    fontSize: 18,
+    fontWeight: '700',
+    marginVertical: 12,
   },
   cardFlutuante: {
     backgroundColor: '#fff',
@@ -42,14 +21,24 @@ export const homeStyles = StyleSheet.create({
     elevation: 3,
   },
   newButton: {
-    backgroundColor: '#F1CE7E',
-    paddingVertical: 14,
-    borderRadius: 10,
+    backgroundColor: '#37BD6D',
+    paddingVertical: 8,
     alignItems: 'center',
+    marginTop: 16,
   },
   newButtonText: {
     fontSize: 16,
     fontWeight: '700',
-    color: '#111827',
+    color: '#FFFFFF',
+  },
+  searchBar: {
+    width: '100%',
+    backgroundColor: '#FFFFFF',
+    paddingHorizontal: 12,
+    paddingVertical: 6,
+    color: '#000',
+    fontSize: 16,
+    marginBottom: 12,
+    alignSelf: 'stretch',
   },
 });

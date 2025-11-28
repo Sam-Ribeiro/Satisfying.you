@@ -2,15 +2,15 @@ import {StyleSheet} from 'react-native';
 
 export const sideMenuStyles = StyleSheet.create({
   header: {
-    height: 60,
-    backgroundColor: '#372775',
+    height: 50,
+    width: '100%',
+    backgroundColor: '#2B1D62',
     justifyContent: 'center',
     paddingHorizontal: 16,
   },
   menuButton: {
     paddingVertical: 6,
     paddingHorizontal: 12,
-    backgroundColor: '#1A1460',
     borderRadius: 8,
     width: 80,
     alignItems: 'center',

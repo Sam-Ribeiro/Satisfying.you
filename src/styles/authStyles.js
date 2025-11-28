@@ -1,66 +1,88 @@
 import {StyleSheet, Platform} from 'react-native';
 
 export const authStyles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#372775',
-    justifyContent: 'center',
-    alignItems: 'center',
-    paddingHorizontal: 16,
+container: {
+  flex: 1,
+  backgroundColor: '#372775',
+  alignItems: 'center',
+  justifyContent: 'center',
+  paddingHorizontal: 32,
+},
+
+formWrapper: {
+  width: '100%',
+  alignSelf: 'stretch',
+  paddingHorizontal: 32,
+  paddingVertical: 6,
+  backgroundColor: 'transparent',
+},
+
+
+  logo: {
+    width: 400,
+    height: 400,
+    resizeMode: 'contain',
+    alignSelf: 'center',
+    marginBottom: -50,
+    marginTop: -70,
   },
-  card: {
-    maxWidth: 700,
-    minWidth: 400,
-    padding: 20,
-    borderRadius: 12,
-    backgroundColor: '#2B1D62',
-    elevation: 2,
+
+  formContent: {
+    marginTop: -30,
+    paddingTop: 0,
   },
-  title: {
-    fontSize: 28,
-    fontWeight: '700',
-    marginBottom: 12,
-    textAlign: 'center',
-    color: '#fff',
-  },
+
   label: {
     fontSize: 14,
-    marginTop: 8,
+    marginTop: 10,
     marginBottom: 4,
     color: '#fff',
   },
+
   input: {
+    width: '100%',
+    height: 51,
     borderWidth: 1,
     borderColor: '#E5E7EB',
-    borderRadius: 8,
     paddingHorizontal: 12,
-    paddingVertical: Platform.select({ios: 12, android: 10}),
     fontSize: 16,
     backgroundColor: '#fff',
+    borderRadius: 0,
   },
-  button: {
-    width: 400,
-    marginTop: 18,
-    backgroundColor: '#111827',
-    paddingVertical: 12,
-    borderRadius: 8,
-    alignItems: 'center',
-    alignSelf: 'center',
-  },
-  buttonText: {
-    color: '#fff',
-    fontWeight: '600',
-    fontSize: 16,
-  },
-  row: {
-    marginTop: 14,
-    flexDirection: 'row',
-    flexWrap: 'wrap',
+
+  buttonBase: {
+    width: '100%',
+    height: 50,
     justifyContent: 'center',
     alignItems: 'center',
+    borderRadius: 0,
+    marginTop: 40,
   },
-  link: {
-    color: '#F1CE7E',
-    fontWeight: '600',
+
+  buttonPrimary: {
+    backgroundColor: '#37BD6D',
+  },
+
+  buttonSecondary: {
+    backgroundColor: '#419ED7',
+    height: 37,
+  },
+
+  buttonTertiary: {
+    backgroundColor: '#B0CCDE',
+    marginTop: 10,
+    height: 37,
+  },
+
+  buttonText: {
+    color: '#FFFFFF',
+    fontWeight: '700',
+    fontSize: 16,
+  },
+
+  row: {
+    marginTop: 12,
+    width: '100%',
+    alignItems: 'center',
   },
 });
