@@ -16,6 +16,11 @@ export const PesquisaSlice = createSlice({
             state.nome =  action.payload.nome
             state.data =  action.payload.data
             state.imagem = action.payload.imagem
+            state.pessimo = action.payload.pessimo
+            state.ruim = action.payload.ruim
+            state.neutro = action.payload.neutro
+            state.bom = action.payload.bom
+            state.excelente = action.payload.excelente
         }
     }
 })

@@ -12,8 +12,7 @@ const NovaPesquisa = (props) =>{
     const [nome, SetNome] = useState('')
     const [data, SetData] = useState('')
     const [image, SetImage] = useState()
-
-
+    
     const db = initializeFirestore(app, {experimentalForceLongPolling: true})
     const pesquisaCollection = collection(db, "pesquisas")
 
@@ -21,7 +20,12 @@ const NovaPesquisa = (props) =>{
         const pesquisa = {
             nome: nome,
             dataPesquisa: data,
-            imagem: image
+            imagem: image,
+            pessimo: 0,
+            ruim: 0,
+            neutro: 0,
+            bom: 0,
+            excelente: 0,
         }
 
         addDoc(pesquisaCollection, pesquisa)

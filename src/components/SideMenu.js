@@ -65,14 +65,25 @@ export default function SideMenu({navigation, children}) {
   }, [])
   const dispatch = useDispatch()
   const abrirPesquisa = (item) =>{
-    dispatch(reducerSetPesquisa({id: item.id, nome: item.nome, data: item.dataPesquisa, imagem: item.imagem}))
-    navigation.navigate('Editar Pesquisa')
+    dispatch(
+      reducerSetPesquisa({
+        id: item.id, 
+        nome: item.nome, 
+        data: item.dataPesquisa, 
+        imagem: item.imagem, 
+        pessimo: item.pessimo,
+        ruim: item.ruim, 
+        neutro: item.neutro, 
+        bom: item.bom, 
+        excelente: item.excelente})
+    )
+    navigation.navigate('AcoesPesquisa')
   }
 
   const itemPesquisa = ({item}) =>{
     return(
       <TouchableOpacity style={{backgroundColor:"#fff"}} onPress={() => abrirPesquisa(item)}>
-        <Text>Id: {item.id} Nome: {item.nome} Data: {item.dataPesquisa}</Text>
+        <Text>Nome: {item.nome} Data: {item.dataPesquisa} Pessimo: {item.pessimo}</Text>
       </TouchableOpacity>
     )
   }

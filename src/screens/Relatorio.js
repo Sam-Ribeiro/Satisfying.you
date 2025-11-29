@@ -1,29 +1,29 @@
-import { View, Text, Image } from "react-native";
-import { coletaStyles } from "../styles/coletaStyles";
+import { View} from "react-native";
 import { globalStyles } from "../styles/globalStyles";
 import Legend from "../components/legend";
-//import PieChart from "react-native-pie-chart";
+import { doc, initializeFirestore} from "firebase/firestore";
+import { useSelector } from 'react-redux';
+import { app } from "../firebase/config";
 import { PieChart } from 'react-native-gifted-charts';
+import { useState } from "react";
 const Relatorio = () =>{
 
+    const pesquisa = useSelector((state) => state.pesquisa) 
+    const db = initializeFirestore(app, {experimentalForceLongPolling: true})
+
+    console.log(pesquisa)
     const series = [
-        { value: 12, color: "#F1CE7E" , shiftX: 8, shiftY: -8 , text: 12},
-        { value: 13, color: "#6994FE" , text: 13},
-        { value: 11, color: "#5FCDA4" , text: 11},
-        { value: 12, color: "#EA7288" , text: 12},
-        { value: 10, color: "#53D8D8" , text: 10},
+        
+        { value: pesquisa.pessimo, color: "#53D8D8" , text: pesquisa.pessimo},
+        { value: pesquisa.ruim, color: "#5FCDA4" , text: pesquisa.ruim},
+        { value: pesquisa.neutro, color: "#EA7288" , text: pesquisa.neutro},
+        { value: pesquisa.bom, color: "#6994FE" , text: pesquisa.bom},
+        { value: pesquisa.excelente, color: "#F1CE7E" , shiftX: -1, shiftY: -3   , text: pesquisa.excelente},
     ]
 
     return(
         <View style={globalStyles.relatorio}>
-{/*}
-            <PieChart
-                widthAndHeight={200}
-                series={series}
-                cover={0.05}
-                padAngle={0.01}
-            />
-{*/}
+
         <PieChart
             data={series}
             donut
