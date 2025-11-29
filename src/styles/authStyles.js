@@ -50,6 +50,20 @@ formWrapper: {
     borderRadius: 0,
   },
 
+  inputErrorBorder: {
+    borderColor: '#FF4D4F',
+    borderWidth: 1,
+  },
+
+  errorText: {
+    color: '#FF4D4F',
+    fontSize: 13,
+    marginTop: 6,
+    marginBottom: 6,
+    marginHorizontal: 2,
+    textAlign: 'left',
+  },
+
   buttonBase: {
     width: '100%',
     height: 50,

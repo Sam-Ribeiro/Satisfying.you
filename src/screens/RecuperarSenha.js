@@ -7,8 +7,8 @@ import {
   KeyboardAvoidingView,
   Platform,
   ScrollView,
-  Alert,
   Dimensions,
+  Alert,
 } from 'react-native';
 
 import {authStyles} from '../styles/authStyles';
@@ -17,27 +17,35 @@ import { auth_mod } from '../firebase/config';
 
 export default function RecuperarSenha({navigation}) {
   const [email, setEmail] = useState('');
+  const [emailFieldError, setEmailFieldError] = useState('');
 
   useEffect(() => {
     navigation.setOptions({ title: 'Recuperação de senha' });
   }, [navigation]);
 
   const handleRecover = () => {
+    setEmailFieldError('');
+
     if (!email.trim()) {
-      Alert.alert('Erro', 'Por favor insira o Email.');
+      setEmailFieldError('Por favor insira o Email.');
       return;
     }
+
     sendPasswordResetEmail(auth_mod, email)
       .then(()=> {
         Alert.alert('Sucesso', 'Email de redefinição de senha enviado. Verifique sua caixa de entrada.');
       })
       .catch((erro)=>{
-        console.log('erro ao enviar Email de redefinição de senha: ' + JSON.stringify(erro));
-        Alert.alert('Erro', 'Não foi possível enviar o email. Tente novamente mais tarde.');
+        const code = erro?.code;
+        if (code === 'auth/user-not-found' || code === 'auth/invalid-email') {
+          setEmailFieldError('E-mail parece ser inválido');
+        } else {
+          Alert.alert('Erro', 'Não foi possível enviar o email. Tente novamente mais tarde.');
+        }
       });
   };
 
-  const { width, height } = Dimensions.get('window');
+  const { width } = Dimensions.get('window');
 
   return (
     <View style={authStyles.container}>
@@ -58,20 +66,23 @@ export default function RecuperarSenha({navigation}) {
           keyboardShouldPersistTaps="handled"
         >
           <View style={authStyles.formWrapper}>
-            {}
             <Text style={authStyles.label}>Email</Text>
             <TextInput
               value={email}
-              onChangeText={setEmail}
+              onChangeText={(t) => {
+                setEmail(t);
+                if (emailFieldError) {setEmailFieldError('');}
+              }}
               placeholder="seu@email.com"
               keyboardType="email-address"
               autoCapitalize="none"
-              style={authStyles.input}
+              style={[authStyles.input, emailFieldError ? authStyles.inputErrorBorder : null]}
               testID="recover-email"
               placeholderTextColor="#8b8b8b"
             />
 
-            {}
+            {emailFieldError ? <Text style={authStyles.errorText}>{emailFieldError}</Text> : null}
+
             <TouchableOpacity
               style={[authStyles.buttonBase, authStyles.buttonPrimary]}
               onPress={handleRecover}

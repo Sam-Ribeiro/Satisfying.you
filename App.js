@@ -23,7 +23,7 @@ export default function App() {
             <NavigationContainer>
                 <Stack.Navigator
                 initialRouteName="Login"
-                screenOptions={{ headerStyle: {backgroundColor: '#2B1D62'}, headerTintColor: '#fff',}}
+                screenOptions={{ headerStyle: {backgroundColor: '#2B1D62'}, headerTintColor: '#fff'}}
                 >
                     <Stack.Screen
                     name="Login"
@@ -35,9 +35,9 @@ export default function App() {
                     component={Home}
                     options={{headerShown: false}}
                     />
-                    <Stack.Screen 
-                    name="Relatorio" 
-                    component={Relatorio} 
+                    <Stack.Screen
+                    name="Relatorio"
+                    component={Relatorio}
                     />
                     <Stack.Screen
                     name="RecuperarSenha"

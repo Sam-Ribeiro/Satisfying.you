@@ -9,6 +9,7 @@ import {
   ScrollView,
   Dimensions,
   Image,
+  Alert,
 } from 'react-native';
 
 import {authStyles} from '../styles/authStyles';
@@ -20,21 +21,34 @@ import { reducerSetLogin } from '../redux/loginSlice';
 export default function Login({navigation}) {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [credentialError, setCredentialError] = useState('');
   const dispatch = useDispatch();
 
   const validateAndLogin = () => {
+
+    setCredentialError('');
+
+    if (!email.trim() || !password.trim()) {
+      setCredentialError('Por favor preencha email e senha.');
+      return;
+    }
+
     signInWithEmailAndPassword(auth_mod, email, password)
       .then((userCredential) => {
-        console.log('usuario logado com sucesso: ' + JSON.stringify(userCredential));
         dispatch(reducerSetLogin({email: email, password: password}));
         navigation.replace('Home');
       })
       .catch((erro) => {
-        console.log('erro ao autenticar usuario: ' + JSON.stringify(erro));
+        const code = erro?.code;
+        if (code === 'auth/wrong-password' || code === 'auth/user-not-found' || code === 'auth/invalid-email') {
+          setCredentialError('E-mail e/ou senha inválidos');
+        } else {
+          Alert.alert('Erro', 'Não foi possível autenticar. Tente novamente mais tarde.');
+        }
       });
   };
 
-  const {width, height} = Dimensions.get('window');
+  const {width} = Dimensions.get('window');
   const logoSize = Math.min(260, width * 0.6);
 
   return (
@@ -56,7 +70,6 @@ export default function Login({navigation}) {
         >
           <View style={authStyles.formWrapper}>
 
-            {}
             <Image
               source={require('../assets/images/logo.png')}
               style={[
@@ -66,14 +79,14 @@ export default function Login({navigation}) {
               resizeMode="contain"
             />
 
-            {}
             <View style={authStyles.formContent}>
-
-              {}
               <Text style={authStyles.label}>Email</Text>
               <TextInput
                 value={email}
-                onChangeText={setEmail}
+                onChangeText={(t) => {
+                  setEmail(t);
+                  if (credentialError) {setCredentialError('');}
+                }}
                 placeholder="seu@email.com"
                 keyboardType="email-address"
                 autoCapitalize="none"
@@ -82,19 +95,22 @@ export default function Login({navigation}) {
                 placeholderTextColor="#8b8b8b"
               />
 
-              {}
               <Text style={authStyles.label}>Senha</Text>
               <TextInput
                 value={password}
-                onChangeText={setPassword}
+                onChangeText={(t) => {
+                  setPassword(t);
+                  if (credentialError) {setCredentialError('');}
+                }}
                 placeholder="Senha"
                 secureTextEntry
-                style={authStyles.input}
+                style={[authStyles.input, credentialError ? authStyles.inputErrorBorder : null]}
                 testID="login-password"
                 placeholderTextColor="#8b8b8b"
               />
 
-              {}
+              {credentialError ? <Text style={authStyles.errorText}>{credentialError}</Text> : null}
+
               <TouchableOpacity
                 style={[authStyles.buttonBase, authStyles.buttonPrimary]}
                 onPress={validateAndLogin}
@@ -118,8 +134,7 @@ export default function Login({navigation}) {
               >
                 <Text style={authStyles.buttonText}>Esqueci minha senha</Text>
               </TouchableOpacity>
-
-            </View>{}
+            </View>
 
           </View>
         </ScrollView>
