@@ -7,6 +7,8 @@ import { collection, initializeFirestore, addDoc } from 'firebase/firestore';
 import { app } from '../firebase/config';
 import { launchImageLibrary } from 'react-native-image-picker';
 import ImageResizer from 'react-native-image-resizer';
+import { useDispatch } from 'react-redux';
+import { reducerSetPesquisa } from '../redux/pesquisaSlice';
 const NovaPesquisa = (props) =>{
 
     const [nome, SetNome] = useState('');
@@ -29,14 +31,33 @@ const NovaPesquisa = (props) =>{
         };
 
         addDoc(pesquisaCollection, pesquisa)
-            .then((result)=> {
-                console.log('Dados inseriros com sucesso: ' + JSON.stringify(result));
-                props.navigation.navigate('AcoesPesquisa');
-            })
+            .then((docRef) => {
+                const novaPesquisa = {
+                    id: docRef.id,
+                    ...pesquisa
+                }
+                abrirPesquisa(novaPesquisa)
+             })
             .catch((error)=>{
                 console.log('Erro ao inserir dados: ' + JSON.stringify(error));
             });
     };
+    const dispatch = useDispatch()
+    const abrirPesquisa = (item) =>{
+        dispatch(
+          reducerSetPesquisa({
+            id: item.id, 
+            nome: item.nome, 
+            data: item.dataPesquisa, 
+            imagem: item.imagem, 
+            pessimo: item.pessimo,
+            ruim: item.ruim, 
+            neutro: item.neutro, 
+            bom: item.bom, 
+            excelente: item.excelente})
+        )
+        props.navigation.navigate('AcoesPesquisa')
+      }
 
     const pickImage = () =>{
         launchImageLibrary({mediaType:'photo'},(result) =>{

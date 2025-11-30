@@ -64,5 +64,11 @@ export const globalStyles = StyleSheet.create({
     position: 'absolute',
     bottom: '5%',
     right: '5%'
+  },
+  hidden:{
+    display: 'none'
+  },
+  popup:{
+    
   }
 })

@@ -14,6 +14,8 @@ import CardItem from '../components/CardItem';
 import { homeStyles } from '../styles/homeStyles';
 import { initializeFirestore, collection, query, onSnapshot } from 'firebase/firestore';
 import { app } from '../firebase/config';
+import { useDispatch } from 'react-redux';
+import { reducerSetPesquisa } from '../redux/pesquisaSlice';
 
 export default function Home({ navigation }) {
   const [searchTerm, setSearchTerm] = useState('');
@@ -41,12 +43,29 @@ export default function Home({ navigation }) {
     item.nome?.toLowerCase().includes(searchTerm.toLowerCase())
   );
 
+  const dispatch = useDispatch()
+  const abrirPesquisa = (item) =>{
+    dispatch(
+      reducerSetPesquisa({
+        id: item.id, 
+        nome: item.nome, 
+        data: item.dataPesquisa, 
+        imagem: item.imagem, 
+        pessimo: item.pessimo,
+        ruim: item.ruim, 
+        neutro: item.neutro, 
+        bom: item.bom, 
+        excelente: item.excelente})
+    )
+    navigation.navigate('AcoesPesquisa')
+  }
+
   const renderCard = ({ item }) => (
     <CardItem
       title={item.nome || ''}
       date={item.dataPesquisa || ''}
       image={item.imagem}
-      onPress={() => navigation.navigate('AcoesPesquisa', { id: item.id })}
+      onPress={() => abrirPesquisa(item)}
     />
   );
 

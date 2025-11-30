@@ -61,11 +61,11 @@ const ModificarPesquisa = (props) =>{
     const convertUriToBase64 = async (uri) => {
 
         const resizedImage = await ImageResizer.createResizedImage(
-            uri,        // URI da imagem original
-            1000,         // Largura
-            1000,         // Altura
-            'JPEG',     // Formato (pode ser 'JPEG' ou 'PNG')
-            50           // Qualidade (0-100)
+            uri,       
+            1000,         
+            1000,         
+            'JPEG',     
+            50           
         );
 
         const imageUri = await fetch(resizedImage.uri);
@@ -75,7 +75,7 @@ const ModificarPesquisa = (props) =>{
         reader.onloadend = () => {
             SetImagem(reader.result);
         };
-        reader.readAsDataURL(imagemBlob); // Converte Blob para Base64
+        reader.readAsDataURL(imagemBlob);
     }
 
     return(

@@ -1,28 +1,54 @@
-import { View, Text, TouchableOpacity } from "react-native";
+import { View, Text } from "react-native";
 import { coletaStyles } from "../styles/coletaStyles";
 import RatingButton from "../components/ratingButton";
 import { app } from "../firebase/config";
-import { doc, updateDoc, increment, initializeFirestore } from "firebase/firestore";
+import { doc, updateDoc, increment, initializeFirestore, getDoc } from "firebase/firestore";
 import { useSelector } from 'react-redux';
-
+import { useDispatch } from 'react-redux';
+import { reducerSetPesquisa } from '../redux/pesquisaSlice';
 const Coleta = (props) =>{
 
     const pesquisa = useSelector((state) => state.pesquisa) 
     const db = initializeFirestore(app, {experimentalForceLongPolling: true})
-
-    const GiveFeedback= (feedback) =>{
+    console.log(pesquisa)
+     const GiveFeedback = (feedback) =>{
         props.navigation.navigate('AgradecimentoParticipacao')
-
         const pesquisaRef = doc(db, "pesquisas", pesquisa.id )
         updateDoc(pesquisaRef, {
             [feedback]: increment(1)
+        }).then(async () => {
+            const snap = await getDoc(pesquisaRef)
+            const pesquisaAtualizada = {
+                    id: pesquisaRef.id,
+                    ...snap.data()
+                }
+            console.log("PEsquisa atualizada: ",pesquisaAtualizada) 
+            atualizarPesquisa( pesquisaAtualizada )
         })
+        
         setTimeout(() => { props.navigation.goBack() }, 3000)
     }
     
+    const dispatch = useDispatch()
+    const atualizarPesquisa = (item) =>{
+        console.log(item)
+        dispatch(
+        reducerSetPesquisa({
+            id: item.id, 
+            nome: item.nome, 
+            data: item.dataPesquisa, 
+            imagem: item.imagem, 
+            pessimo: item.pessimo,
+            ruim: item.ruim, 
+            neutro: item.neutro, 
+            bom: item.bom, 
+            excelente: item.excelente})
+        )
+    }
+
     return(
         <View style={coletaStyles.coleta}>
-            <Text style={coletaStyles.text}>O que você achou do carnaval 2025?</Text>
+            <Text style={coletaStyles.text}>O que você achou do {pesquisa.nome}</Text>
             <View style={coletaStyles.feedback}>
                 <RatingButton text="Péssimo" color="red" icon="sentiment-very-dissatisfied" onPress={() => GiveFeedback("pessimo")} />
                 <RatingButton text="Ruim" color="orange" icon="sentiment-dissatisfied" onPress={() => GiveFeedback("ruim")}/>
