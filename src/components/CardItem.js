@@ -1,24 +1,26 @@
+// src/components/CardItem.js
 import React from 'react';
 import { View, Text, TouchableOpacity, StyleSheet, Image } from 'react-native';
 
 export default function CardItem({ title, date, image, onPress }) {
+  const imageSource = image
+    ? (typeof image === 'string' ? { uri: image } : image)
+    : null;
+
   return (
     <TouchableOpacity
       style={styles.card}
       activeOpacity={0.9}
       onPress={onPress}
     >
-      {}
-      {image ? (
-        <Image source={image} style={styles.image} resizeMode="cover" />
+      {imageSource ? (
+        <Image source={imageSource} style={styles.image} resizeMode="cover" />
       ) : (
         <View style={styles.imagePlaceholder} />
       )}
 
-      {}
       <Text style={styles.title}>{title}</Text>
 
-      {}
       {date && <Text style={styles.date}>{date}</Text>}
     </TouchableOpacity>
   );

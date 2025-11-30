@@ -1,11 +1,8 @@
-import React, {useRef, useState, useEffect} from 'react';
-import { View, Text, TouchableOpacity, Animated, Dimensions, TouchableWithoutFeedback, FlatList } from 'react-native';
+// src/components/SideMenu.js
+import React, {useRef, useState} from 'react';
+import { View, Text, TouchableOpacity, Animated, Dimensions, TouchableWithoutFeedback } from 'react-native';
 import {sideMenuStyles} from '../styles/sideMenu';
-import { query, collection, initializeFirestore, onSnapshot } from "firebase/firestore";
-import { app } from "../firebase/config";
 import { useSelector } from 'react-redux';
-import { useDispatch } from 'react-redux';
-import { reducerSetPesquisa } from '../redux/pesquisaSlice';
 
 export default function SideMenu({navigation, children}) {
   const [open, setOpen] = useState(false);
@@ -13,7 +10,7 @@ export default function SideMenu({navigation, children}) {
   const widthAnim = useRef(new Animated.Value(0)).current;
   const screenWidth = Dimensions.get('window').width;
 
-  const email = useSelector((state) => state.login.email) 
+  const email = useSelector((state) => state.login.email);
 
   const toggleMenu = () => {
     if (!open) {
@@ -42,51 +39,6 @@ export default function SideMenu({navigation, children}) {
     navigation.replace('Login');
     toggleMenu();
   };
-
-  //firebase muda dps, isso é so pra carregar VVVVV
-
-  const db = initializeFirestore(app, {experimentalForceLongPolling: true})
-  const pesquisaCollection = collection(db, "pesquisas")
-  const [ListaPesquisas, setListaPesquisas] = useState()
-  useEffect ( () => {
-    const q = query(pesquisaCollection)
-
-    const unsubscribe = onSnapshot(q, (snapshot)=>{
-      const pesquisas = []
-      snapshot.forEach( (doc) => {
-        pesquisas.push({
-          id: doc.id,
-          ...doc.data()
-        })
-      })
-      
-      setListaPesquisas(pesquisas)
-    })
-  }, [])
-  const dispatch = useDispatch()
-  const abrirPesquisa = (item) =>{
-    dispatch(
-      reducerSetPesquisa({
-        id: item.id, 
-        nome: item.nome, 
-        data: item.dataPesquisa, 
-        imagem: item.imagem, 
-        pessimo: item.pessimo,
-        ruim: item.ruim, 
-        neutro: item.neutro, 
-        bom: item.bom, 
-        excelente: item.excelente})
-    )
-    navigation.navigate('AcoesPesquisa')
-  }
-
-  const itemPesquisa = ({item}) =>{
-    return(
-      <TouchableOpacity style={{backgroundColor:"#fff"}} onPress={() => abrirPesquisa(item)}>
-        <Text>Nome: {item.nome} Data: {item.dataPesquisa} Pessimo: {item.pessimo}</Text>
-      </TouchableOpacity>
-    )
-  }
 
   return (
     <View style={{flex: 1}}>
@@ -134,18 +86,16 @@ export default function SideMenu({navigation, children}) {
             style={sideMenuStyles.menuItem}>
             <Text style={sideMenuStyles.menuText}>Pesquisas</Text>
           </TouchableOpacity>
-          {/*  Exibindo os itens do db EXEMPLO!!!!!*/}
-          <View>
-            <FlatList data={ListaPesquisas} renderItem={itemPesquisa} keyExtractor={pesquisa => pesquisa.id}></FlatList>
-          </View>
-          {/*  Exibindo os itens do db EXEMPLO!!!!! e abaixo o email do usuario logado*/}
+
+          {}
+
           <Text style={sideMenuStyles.menuText}>{email}</Text>
           <TouchableOpacity onPress={logout} style={sideMenuStyles.menuItem}>
             <Text style={sideMenuStyles.menuText}>Sair</Text>
           </TouchableOpacity>
         </Animated.View>
       )}
-      
+
     </View>
   );
 }

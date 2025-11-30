@@ -1,4 +1,5 @@
-import React, { useState } from 'react';
+// src/screens/Home.js
+import React, { useState, useEffect } from 'react';
 import {
   View,
   Text,
@@ -11,20 +12,41 @@ import {
 import SideMenu from '../components/SideMenu';
 import CardItem from '../components/CardItem';
 import { homeStyles } from '../styles/homeStyles';
+import { initializeFirestore, collection, query, onSnapshot } from 'firebase/firestore';
+import { app } from '../firebase/config';
 
 export default function Home({ navigation }) {
   const [searchTerm, setSearchTerm] = useState('');
+  const [cardsData, setCardsData] = useState([]);
 
-  const cardsData = [
-    { id: '1', title: 'SECOMP', date: '10/11/2025', image: require('../assets/images/card1.png') },
-  ];
+  useEffect(() => {
+    const db = initializeFirestore(app, { experimentalForceLongPolling: true });
+    const pesquisaCollection = collection(db, 'pesquisas');
+    const q = query(pesquisaCollection);
+
+    const unsubscribe = onSnapshot(q, (snapshot) => {
+      const pesquisas = [];
+      snapshot.forEach((doc) => {
+        pesquisas.push({ id: doc.id, ...doc.data() });
+      });
+      setCardsData(pesquisas);
+    }, (err) => {
+      console.error('Erro ao escutar pesquisas:', err);
+    });
+
+    return () => unsubscribe();
+  }, []);
+
+  const filtered = cardsData.filter(item =>
+    item.nome?.toLowerCase().includes(searchTerm.toLowerCase())
+  );
 
   const renderCard = ({ item }) => (
     <CardItem
-      title={item.title}
-      date={item.date}
-      image={item.image}
-      onPress={() => navigation.navigate('Pesquisa', { id: item.id })}
+      title={item.nome || ''}
+      date={item.dataPesquisa || ''}
+      image={item.imagem}
+      onPress={() => navigation.navigate('AcoesPesquisa', { id: item.id })}
     />
   );
 
@@ -43,7 +65,7 @@ export default function Home({ navigation }) {
 
           <ScrollView showsVerticalScrollIndicator={false}>
             <FlatList
-              data={cardsData}
+              data={filtered}
               keyExtractor={(item) => item.id}
               renderItem={renderCard}
               horizontal

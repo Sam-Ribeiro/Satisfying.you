@@ -28,7 +28,7 @@ export default function Register({navigation}) {
     setConfirmError('');
 
     if (!email.trim() || !password.trim() || !passwordConfirm.trim()) {
-      Alert.alert('Erro', 'Por favor preencha todos os campos.');
+      setConfirmError('Erro', 'Por favor preencha todos os campos.');
       return;
     }
 
@@ -42,18 +42,18 @@ export default function Register({navigation}) {
       await createUserWithEmailAndPassword(auth_mod, email, password);
       setLoading(false);
       navigation.replace('Login');
-      Alert.alert('Sucesso', 'Conta criada com sucesso. Faça login.');
+      setConfirmError('Sucesso', 'Conta criada com sucesso. Faça login.');
     } catch (erro) {
       setLoading(false);
       const code = erro?.code;
       if (code === 'auth/email-already-in-use') {
-        Alert.alert('Erro', 'Este email já está em uso. Faça login ou use outro email.');
+        setConfirmError('Este email já está em uso. Faça login ou use outro email.');
       } else if (code === 'auth/invalid-email') {
-        Alert.alert('Erro', 'O formato do email é inválido.');
+        setConfirmError('O formato do email é inválido.');
       } else if (code === 'auth/weak-password') {
-        Alert.alert('Erro', 'Senha fraca. Use pelo menos 6 caracteres.');
+        setConfirmError('Senha fraca. Use pelo menos 6 caracteres.');
       } else {
-        Alert.alert('Erro', 'Não foi possível criar a conta. Tente novamente mais tarde.');
+        setConfirmError('Não foi possível criar a conta. Tente novamente mais tarde.');
       }
     }
   };
