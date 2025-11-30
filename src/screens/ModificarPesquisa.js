@@ -1,17 +1,20 @@
 import { View, TouchableOpacity, Text, Alert} from "react-native";
 import { globalStyles } from "../styles/globalStyles";
 import { useState } from "react";
-import { doc, updateDoc, initializeFirestore, deleteDoc } from "firebase/firestore";
+import { doc, updateDoc, initializeFirestore, deleteDoc, getDoc } from "firebase/firestore";
 import { app } from "../firebase/config";
 import InputField from "../components/inputField";
 import InputImage from "../components/inputImage";
 import Icon from 'react-native-vector-icons/MaterialIcons'
 import { useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
+import { reducerSetPesquisa } from '../redux/pesquisaSlice';
 import { launchImageLibrary } from "react-native-image-picker";
 import ImageResizer from "react-native-image-resizer";
 
 const ModificarPesquisa = (props) =>{
 
+    const [showPopup, setShowPopup]= useState(false)
     const pesquisa = useSelector((state) => state.pesquisa) 
     const [nome, SetNome] = useState(pesquisa.nome)
     const [data, SetData] = useState(pesquisa.data)
@@ -26,30 +29,43 @@ const ModificarPesquisa = (props) =>{
             dataPesquisa: data,
             imagem: imagem
         })
-            .then(() => {
-                // atualizou  colocar pesquisa atualizada com sucesso
-                props.navigation.navigate('')
+            .then(async () => {
+                const snap = await getDoc(pesquisaRef)
+                const pesquisaAtualizada = {
+                        id: pesquisaRef.id,
+                        ...snap.data()
+                    }
+                atualizarPesquisa( pesquisaAtualizada )
             })
             .catch((error) =>{
                 console.log("Erro: " + error)
             })
+    }
 
+    const dispatch = useDispatch()
+    const atualizarPesquisa = (item) =>{
+        dispatch(
+        reducerSetPesquisa({
+            id: item.id, 
+            nome: item.nome, 
+            data: item.dataPesquisa, 
+            imagem: item.imagem, 
+            pessimo: item.pessimo,
+            ruim: item.ruim, 
+            neutro: item.neutro, 
+            bom: item.bom, 
+            excelente: item.excelente})
+        )
+        props.navigation.navigate('AcoesPesquisa')
     }
 
     const apagarPesquisa = () =>{
         deleteDoc(doc(db, "pesquisas", pesquisa.id))
-        props.navigation.navigate('Pesquisa')
+        props.navigation.navigate('Home')
     }
 
     const Apagar = () =>{
-        Alert.alert(
-            'Confirmar exclusão',
-            'Tem certeza que quer apagar a pesquisa?',
-            [
-                { text: 'Não', style: 'cancel' },
-                { text: 'Sim', onPress: apagarPesquisa() },
-            ]
-        )
+        setShowPopup(true)
     }
 
     const pickImage = () =>{
@@ -89,7 +105,19 @@ const ModificarPesquisa = (props) =>{
             <TouchableOpacity style={globalStyles.button} onPress={Editar}>
                 <Text style={globalStyles.buttonText}>Editar</Text>
             </TouchableOpacity>
-            <View></View>
+            <View style={ showPopup ? globalStyles.backdrop : globalStyles.hidden }>
+                <View style={globalStyles.popup}>
+                    <Text style={globalStyles.buttonText}>Tem certeza de apagar essa pesquisa?</Text>
+                    <View style={globalStyles.buttonContainer}>
+                        <TouchableOpacity style={globalStyles.buttonConfirmDelete} onPress={() => apagarPesquisa()}>
+                            <Text style={globalStyles.buttonText}>SIM</Text>
+                        </TouchableOpacity>
+                        <TouchableOpacity style={globalStyles.buttonCancelDelete} onPress={() => setShowPopup(false)}>
+                            <Text style={globalStyles.buttonText}>CANCELAR</Text>
+                        </TouchableOpacity>
+                    </View>
+                </View>
+            </View>
         </View>
     )
 }

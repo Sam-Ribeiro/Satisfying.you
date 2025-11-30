@@ -69,6 +69,42 @@ export const globalStyles = StyleSheet.create({
     display: 'none'
   },
   popup:{
-    
+    backgroundColor: '#2B1F5C',
+    height: 150,
+    width: 350,
+    position: 'absolute',
+    padding: 30, 
+  },
+  buttonConfirmDelete:{
+    backgroundColor: '#FF8383',
+    color: '#fff',
+    padding: 5,
+    width: 130,
+    display: 'flex',
+    alignItems: 'center'
+  },
+  buttonCancelDelete:{
+    backgroundColor: '#3F92C5',
+    color: '#fff',
+    padding: 5,
+    width: 130, 
+    display: 'flex',
+    alignItems: 'center'
+  },
+  backdrop: {
+    position: "absolute",
+    top: 0,
+    bottom: 0,
+    left: 0,
+    right: 0,
+    backgroundColor: "rgba(0, 0, 0, 0.5)",
+    justifyContent: "center",
+    alignItems: "center",
+  },
+  buttonContainer:{
+    display: 'flex',
+    flexDirection:'row',
+    margin: 10,
+    justifyContent: 'space-around'
   }
 })

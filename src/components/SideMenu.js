@@ -79,10 +79,11 @@ export default function SideMenu({navigation, children}) {
               left: 0,
               height: '100%',
               zIndex: 10,
+              justifyContent: 'space-between'
             },
           ]}>
           <TouchableOpacity
-            onPress={() => navigateTo('AcoesPesquisa')}
+            //onPress={() => navigateTo('AcoesPesquisa')}
             style={sideMenuStyles.menuItem}>
             <Text style={sideMenuStyles.menuText}>Pesquisas</Text>
           </TouchableOpacity>

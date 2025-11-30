@@ -10,7 +10,6 @@ const Coleta = (props) =>{
 
     const pesquisa = useSelector((state) => state.pesquisa) 
     const db = initializeFirestore(app, {experimentalForceLongPolling: true})
-    console.log(pesquisa)
      const GiveFeedback = (feedback) =>{
         props.navigation.navigate('AgradecimentoParticipacao')
         const pesquisaRef = doc(db, "pesquisas", pesquisa.id )
@@ -22,7 +21,6 @@ const Coleta = (props) =>{
                     id: pesquisaRef.id,
                     ...snap.data()
                 }
-            console.log("PEsquisa atualizada: ",pesquisaAtualizada) 
             atualizarPesquisa( pesquisaAtualizada )
         })
         
