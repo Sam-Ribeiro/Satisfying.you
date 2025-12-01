@@ -43,7 +43,7 @@ export default function Login({navigation}) {
         if (code === 'auth/wrong-password' || code === 'auth/user-not-found' || code === 'auth/invalid-email') {
           setCredentialError('E-mail e/ou senha inválidos');
         } else {
-          Alert.alert('Erro', 'Não foi possível autenticar. Tente novamente mais tarde.');
+          Alert.alert('Não foi possível autenticar. Tente novamente mais tarde.');
         }
       });
   };
